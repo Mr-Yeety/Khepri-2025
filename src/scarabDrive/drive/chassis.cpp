@@ -1,5 +1,7 @@
 #include "main.h"
 
+
+
 double scarabDrive::driveCurve(double input, double curve){
         return (std::pow(2.718, -(curve / 10)) + std::pow(2.718, (std::abs(input) - 127) / 10) * (1 - std::pow(2.718, -(curve / 10)))) * input;
 }

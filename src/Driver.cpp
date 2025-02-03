@@ -1,0 +1,35 @@
+
+#include "Driver.hpp"
+
+
+void Driver::init(int selector){
+
+if(selector == 3){ //Sadeeb Controls X and B are in use
+    MOGO = pros::E_CONTROLLER_DIGITAL_L1;
+    //FLEX = pros::E_CONTROLLER_DIGITAL_R1;
+    INTAKE = pros::E_CONTROLLER_DIGITAL_R2;
+    INTAKE_REV = pros::E_CONTROLLER_DIGITAL_R1;
+    LADYBROWN = pros::E_CONTROLLER_DIGITAL_Y;
+    DOINKER = pros::E_CONTROLLER_DIGITAL_UP;
+    //LB_JERK = pros::E_CONTROLLER_DIGITAL_RIGHT;
+    INTAKE_LIFT = pros::E_CONTROLLER_DIGITAL_RIGHT;
+
+    LINEAR_CURVE = 0;
+    ANGLE_CURVE = 0;
+}else{ //AJ Controls
+    MOGO = pros::E_CONTROLLER_DIGITAL_L1;
+    //FLEX = pros::E_CONTROLLER_DIGITAL_R1;
+    INTAKE = pros::E_CONTROLLER_DIGITAL_R2;
+    INTAKE_REV = pros::E_CONTROLLER_DIGITAL_R1;
+    LADYBROWN = pros::E_CONTROLLER_DIGITAL_Y;
+    DOINKER = pros::E_CONTROLLER_DIGITAL_UP;
+    //LB_JERK = pros::E_CONTROLLER_DIGITAL_Y;
+    INTAKE_LIFT = pros::E_CONTROLLER_DIGITAL_RIGHT;
+
+
+    LINEAR_CURVE = 0;
+    ANGLE_CURVE = 0;
+}
+
+
+}

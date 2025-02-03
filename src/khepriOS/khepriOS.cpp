@@ -138,43 +138,18 @@ static void driverSwitchEventHandler(lv_event_t * event){
 
 static void confirmSwitchEventHandler(lv_event_t * event){
 
+    std::cout<<"Ready";
+    pros::delay(500);
+    auton = lv_dropdown_get_selected(autonDropDown);
 
-    if(lv_obj_has_state(driverSwitch,LV_STATE_CHECKED)){
-        driver = false;
-    }else if(!lv_obj_has_state(driverSwitch,LV_STATE_CHECKED)){
-        driver = true;
-    }
 
     if(lv_obj_has_state(colorSwitch,LV_STATE_CHECKED)){
         isRed = false;
-    }else if(!lv_obj_has_state(driverSwitch,LV_STATE_CHECKED)){
+        ready = true;
+    }else if(!lv_obj_has_state(colorSwitch,LV_STATE_CHECKED)){
         isRed = true;
+        ready = true;
     }
-
-    if(lv_dropdown_get_selected(autonDropDown) == 0){
-        auton = true;
-    }else if(lv_dropdown_get_selected(autonDropDown) == 1){
-        auton = false;
-    }else if(lv_dropdown_get_selected(autonDropDown) == 2){
-        auton = NULL;
-        skills = true;
-    }
-
-    if(lv_dropdown_get_selected(pageDropDown) == 0){
-        lv_obj_clean(selectorScreen);
-        lv_obj_t * nameObject = lv_img_create(lv_scr_act());
-        //lv_img_set_src(nameObject, &l);
-       // lv_obj_set_align(nameObject, LV_ALIGN_CENTER);
-        //lv_obj_set_pos(nameObject, -10,-20);
-        ready=true;
-    }else if(lv_dropdown_get_selected(pageDropDown) == 1){
-        ready=true;
-    }else if(lv_dropdown_get_selected(pageDropDown) == 2){
-       ready=true;
-    }
-
-
-
 
 }
 
@@ -188,7 +163,7 @@ void createSelectionScreen(){
     lv_obj_t * colorSection = lv_obj_create(selectorScreen);
     lv_obj_add_style(colorSection,&backgroundStyle,0);
     lv_obj_align(colorSection,LV_ALIGN_TOP_LEFT,0,0);
-    lv_obj_set_size(colorSection,240,120);
+    lv_obj_set_size(colorSection,240,240);
 
     
     
@@ -197,7 +172,7 @@ void createSelectionScreen(){
     lv_obj_add_style(colorSwitch,&redSwitch, LV_PART_MAIN);
     lv_obj_add_style(colorSwitch,&blueSwitch, LV_PART_INDICATOR);
     lv_obj_add_style(colorSwitch,&knobSwitch, LV_PART_KNOB);
-    lv_obj_set_width(colorSwitch,60);
+    lv_obj_set_width(colorSwitch,150);
     lv_obj_add_event_cb(colorSwitch,colorSwitchEventHandler,LV_EVENT_VALUE_CHANGED,NULL);
     
 
@@ -233,7 +208,7 @@ void createSelectionScreen(){
     lv_obj_t * autonSection = lv_obj_create(selectorScreen);
     lv_obj_add_style(autonSection,&backgroundStyle,0);
     lv_obj_align(autonSection,LV_ALIGN_TOP_RIGHT,0,0);
-    lv_obj_set_size(autonSection,240,120);
+    lv_obj_set_size(autonSection,240,240);
 
     autonDropDown = lv_dropdown_create(autonSection);
     lv_dropdown_set_options(autonDropDown, "Winpoint\n"
@@ -265,59 +240,6 @@ void createSelectionScreen(){
 
 
 
-    lv_obj_t * driverSection = lv_obj_create(selectorScreen);
-    lv_obj_add_style(driverSection,&backgroundStyle,0);
-    lv_obj_align(driverSection,LV_ALIGN_BOTTOM_LEFT,0,0);
-    lv_obj_set_size(driverSection,240,120);
-
-     
-    driverlabel = lv_label_create(driverSection);
-    lv_label_set_text(driverlabel, "Your Driver is AJ");
-    lv_obj_align_to(driverlabel,driverSection,LV_ALIGN_TOP_MID,0,-15);
-
-    driverSwitch = lv_switch_create(driverSection);
-    lv_obj_center(driverSwitch);
-    lv_obj_add_event_cb(driverSwitch, driverSwitchEventHandler, LV_EVENT_VALUE_CHANGED, driverlabel);
-    lv_obj_add_style(driverSwitch,&goldSwitch, LV_PART_MAIN);
-    lv_obj_add_style(driverSwitch,&goldSwitch, LV_PART_INDICATOR);
-    lv_obj_add_style(driverSwitch,&knobSwitch, LV_PART_KNOB);
-    lv_obj_set_width(driverSwitch,60);
-
-
-
-
-lv_obj_t * pageSection = lv_obj_create(selectorScreen);
-    lv_obj_add_style(pageSection,&backgroundStyle,0);
-    lv_obj_align(pageSection,LV_ALIGN_BOTTOM_RIGHT,0,0);
-    lv_obj_set_size(pageSection,240,120);
-
-    pageDropDown = lv_dropdown_create(pageSection);
-    lv_dropdown_set_options(pageDropDown, "Logo\n"
-                            "Flag\n"
-                            "Color");
-
-
-    lv_obj_center(pageDropDown);
-    lv_obj_set_style_bg_color(pageDropDown,lv_color_hex3(0x000), LV_PART_MAIN);
-    lv_obj_set_style_border_color(pageDropDown,lv_color_hex(0xBFA960), LV_PART_MAIN);
-    lv_obj_set_style_border_width(pageDropDown,2, LV_PART_MAIN);
-
-    lv_obj_t * list1 = lv_dropdown_get_list(pageDropDown);
-    lv_obj_set_style_bg_color(list1,lv_color_hex3(0x000), LV_PART_MAIN);
-    lv_obj_set_style_border_width(list1,0, LV_PART_MAIN);
-
-    lv_obj_set_style_bg_color(list1,lv_color_hex3(0x000),  LV_PART_SELECTED | LV_STATE_CHECKED);
-        lv_obj_set_style_border_color(list1,lv_color_hex(0xBFA960),  LV_PART_SELECTED | LV_STATE_CHECKED);
-    lv_obj_set_style_border_width(list1,2,  LV_PART_SELECTED | LV_STATE_CHECKED);
-    lv_obj_set_style_radius(list1,10,  LV_PART_SELECTED | LV_STATE_CHECKED);
-
-
-    
-    lv_obj_t * pageLabel = lv_label_create(pageSection);
-    lv_label_set_text(pageLabel, "Select An Ending Page");
-    lv_obj_align_to(pageLabel,pageSection,LV_ALIGN_CENTER,0,-40);
-
-
 
 
 
@@ -329,8 +251,8 @@ lv_obj_t * pageSection = lv_obj_create(selectorScreen);
    lv_obj_t *confirmButtonLabel = lv_label_create(confirmButton);
    lv_label_set_text(confirmButtonLabel, "Confirm");
    lv_obj_set_align(confirmButtonLabel,LV_ALIGN_CENTER);
-   lv_obj_set_size(confirmButton, 70,37);
-   lv_obj_align_to(confirmButton,selectorScreen, LV_ALIGN_BOTTOM_MID,0,0); //Change Alignment
+   lv_obj_set_size(confirmButton, 150,75);
+   lv_obj_align_to(confirmButton,selectorScreen, LV_ALIGN_BOTTOM_MID,0,-50); //Change Alignment
     lv_obj_add_event_cb(confirmButton,confirmSwitchEventHandler,LV_EVENT_CLICKED, NULL);
 
 

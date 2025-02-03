@@ -43,7 +43,7 @@ double getVerticalDistanceTravelled(){
 void scarabDrive::initializeOdom(){
     verticalOdomWheel.reset();
     imu1.reset();
-    imu2.reset();
+    //imu2.reset();
     pros::delay(3000);
     master.rumble("--");
     printf("Scarab Drive has been Initialized");
@@ -63,7 +63,7 @@ void scarabDrive::resetOdom(){
     previousHeading = 0;
 
     imu1.set_heading(0);
-    imu2.set_heading(0);
+    //imu2.set_heading(0);
 }
 
 void scarabDrive::getPostion(){

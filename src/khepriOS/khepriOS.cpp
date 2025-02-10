@@ -107,12 +107,12 @@ lv_style_set_text_color(&background3Style, lv_color_hex3(0xfff));
 
 static void colorSwitchEventHandler(lv_event_t * event){
 if(lv_obj_has_state(colorSwitch,LV_STATE_CHECKED)){
-    lv_led_set_color(colorLED,lv_color_hex(0x0076C0));
+    lv_led_set_color(colorLED,lv_color_hex(0x000000));
     lv_label_set_text(colorLabel1,"BLUE");
     lv_obj_align_to(colorLabel1,colorLED,LV_ALIGN_CENTER,-2,0);
     
 }else if(!lv_obj_has_state(colorSwitch,LV_STATE_CHECKED)){
-    lv_led_set_color(colorLED,lv_color_hex(0xFF0000));
+    lv_led_set_color(colorLED,lv_color_hex(0x000000));
     lv_label_set_text(colorLabel1,"RED");
     lv_obj_align_to(colorLabel1,colorLED,LV_ALIGN_CENTER,0,0);
 
@@ -145,9 +145,11 @@ static void confirmSwitchEventHandler(lv_event_t * event){
 
     if(lv_obj_has_state(colorSwitch,LV_STATE_CHECKED)){
         isRed = false;
+        lv_obj_clean(lv_scr_act());
         ready = true;
     }else if(!lv_obj_has_state(colorSwitch,LV_STATE_CHECKED)){
         isRed = true;
+        lv_obj_clean(lv_scr_act());
         ready = true;
     }
 
@@ -163,16 +165,26 @@ void createSelectionScreen(){
     lv_obj_t * colorSection = lv_obj_create(selectorScreen);
     lv_obj_add_style(colorSection,&backgroundStyle,0);
     lv_obj_align(colorSection,LV_ALIGN_TOP_LEFT,0,0);
-    lv_obj_set_size(colorSection,240,240);
+    lv_obj_set_size(colorSection,200,120);
 
     
+    colorLED = lv_led_create(colorSection);
+    lv_obj_align_to(colorLED,colorSection,LV_ALIGN_CENTER,-20,-7);
+    lv_led_set_color(colorLED,lv_color_hex(0x000000));
+    lv_obj_set_style_radius(colorLED,10,NULL);
+    lv_obj_set_size(colorLED,60,30);
+
+    colorLabel1 = lv_label_create(colorSection);
+    lv_label_set_text(colorLabel1, "RED");
+    lv_obj_align_to(colorLabel1,colorLED,LV_ALIGN_CENTER,0,0);
+    lv_obj_set_style_text_color(colorLabel1, lv_color_hex(0x2B1B1B),NULL);
     
     colorSwitch = lv_switch_create(colorSection);
-    lv_obj_align_to(colorSwitch,colorSection,LV_ALIGN_BOTTOM_MID,-8,0);
+    lv_obj_align_to(colorSwitch,colorSection,LV_ALIGN_CENTER,-20,0);
     lv_obj_add_style(colorSwitch,&redSwitch, LV_PART_MAIN);
     lv_obj_add_style(colorSwitch,&blueSwitch, LV_PART_INDICATOR);
     lv_obj_add_style(colorSwitch,&knobSwitch, LV_PART_KNOB);
-    lv_obj_set_width(colorSwitch,150);
+    lv_obj_set_size(colorSwitch,100,50);
     lv_obj_add_event_cb(colorSwitch,colorSwitchEventHandler,LV_EVENT_VALUE_CHANGED,NULL);
     
 
@@ -182,16 +194,6 @@ void createSelectionScreen(){
 
 
 
-    colorLED = lv_led_create(colorSection);
-    lv_obj_align_to(colorLED,colorSection,LV_ALIGN_CENTER,-20,-7);
-    lv_led_set_color(colorLED,lv_color_hex(0xFF0000));
-    lv_obj_set_style_radius(colorLED,10,NULL);
-    lv_obj_set_size(colorLED,60,30);
-
-    colorLabel1 = lv_label_create(colorSection);
-    lv_label_set_text(colorLabel1, "RED");
-    lv_obj_align_to(colorLabel1,colorLED,LV_ALIGN_CENTER,0,0);
-    lv_obj_set_style_text_color(colorLabel1, lv_color_hex(0x2B1B1B),NULL);
 
 
 
@@ -207,19 +209,24 @@ void createSelectionScreen(){
 
     lv_obj_t * autonSection = lv_obj_create(selectorScreen);
     lv_obj_add_style(autonSection,&backgroundStyle,0);
-    lv_obj_align(autonSection,LV_ALIGN_TOP_RIGHT,0,0);
-    lv_obj_set_size(autonSection,240,240);
+    lv_obj_align(autonSection,LV_ALIGN_BOTTOM_LEFT,0,0);
+    lv_obj_set_size(autonSection,200,120);
 
     autonDropDown = lv_dropdown_create(autonSection);
-    lv_dropdown_set_options(autonDropDown, "Winpoint\n"
-                            "Elims\n"
+    lv_dropdown_set_options(autonDropDown, "Solo AWP\n"
+                            "Goal Rush\n"
+                            "5 Ring\n"
+                            "6 Ring\n"
+                            "Go Forward\n"
                             "Skills");
 
 
-    lv_obj_align(autonDropDown, LV_ALIGN_BOTTOM_MID, 0,0);
+
+    lv_obj_align(autonDropDown, LV_ALIGN_CENTER, 0,0);
     lv_obj_set_style_bg_color(autonDropDown,lv_color_hex3(0x000), LV_PART_MAIN);
     lv_obj_set_style_border_color(autonDropDown,lv_color_hex(0xBFA960), LV_PART_MAIN);
     lv_obj_set_style_border_width(autonDropDown,2, LV_PART_MAIN);
+    lv_dropdown_set_dir(autonDropDown, LV_DIR_RIGHT);
 
     lv_obj_t * list = lv_dropdown_get_list(autonDropDown);
     lv_obj_set_style_bg_color(list,lv_color_hex3(0x000), LV_PART_MAIN);
@@ -251,15 +258,9 @@ void createSelectionScreen(){
    lv_obj_t *confirmButtonLabel = lv_label_create(confirmButton);
    lv_label_set_text(confirmButtonLabel, "Confirm");
    lv_obj_set_align(confirmButtonLabel,LV_ALIGN_CENTER);
-   lv_obj_set_size(confirmButton, 150,75);
-   lv_obj_align_to(confirmButton,selectorScreen, LV_ALIGN_BOTTOM_MID,0,-50); //Change Alignment
+   lv_obj_set_size(confirmButton, 110,55);
+   lv_obj_align_to(confirmButton,selectorScreen,LV_ALIGN_RIGHT_MID,-60,0); //Change Alignment
     lv_obj_add_event_cb(confirmButton,confirmSwitchEventHandler,LV_EVENT_CLICKED, NULL);
 
-
-
-
-
-
-  
 
 }

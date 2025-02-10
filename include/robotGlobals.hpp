@@ -12,7 +12,7 @@ inline bool isRed = true;
 
 
 inline const int numStates = 4;
-inline int states[numStates] = {0,2500,13500};
+inline int states[numStates] = {0,2200,13500};
 inline int currState = 0;
 inline int target = 0;
 
@@ -27,6 +27,7 @@ inline pros::MotorGroup rightDrive({-13,12,14});
 
 inline pros::Rotation verticalOdomWheel(15);
 inline pros::Rotation ladyBrownSensor(10);
+inline pros::Distance mogoDistance(21);
 
 inline pros::Imu imu1(17);
 
@@ -36,7 +37,7 @@ inline pros::Motor intakeStage2(1);
 inline pros::Motor ladyBrown(9);
 
 
-inline pros::Optical colorSensor(2);
+inline pros::Optical colorSensor(3);
 
 
 //Pneumatics

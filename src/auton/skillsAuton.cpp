@@ -6,17 +6,6 @@ void skillsAuton(){
     chassis.moveToPoint(-0.1,20.1, 4000, {.forwards=true});
 
 
-    pros::Task jamTask([]{
-        while(true){
-            pros::delay(500);
-            if(abs(intake.get_actual_velocity(1)) < 0 && abs(intake.get_current_draw(1)) > 0){
-                intake.move_velocity(0);
-                intakeStage2.move_voltage(12000);
-                pros::delay(100);
-                intakeStage2.move_voltage(-12000);
-            }
-        }
-    });
 
 
 //_______________________________________________________________________________________

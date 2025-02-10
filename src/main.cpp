@@ -10,14 +10,15 @@
 void initialize() {
     master.clear();
     pros::delay(50);
+    colorSensor.set_led_pwm(100);
 
-if(pros::competition::is_connected()){
+    
     init();
     while(ready==false){
         printf(" ");
     }
     
-}
+
 
     driver.init(auton);
     chassis.calibrate();
@@ -26,8 +27,6 @@ if(pros::competition::is_connected()){
     chassis.setBrakeMode(MOTOR_BRAKE_HOLD);
     ladyBrownSensor.set_data_rate(5);
     ladyBrownSensor.reset_position();
-    colorSensor.set_led_pwm(100);
-    colorSensor.set_integration_time(10);
     master.clear();
     pros::delay(50);
 
@@ -53,8 +52,19 @@ if(pros::competition::is_connected()){
             master.print(1,0,"DT:%.0lf|LBT:%.0lf", averageDriveTemp,ladyBrown.get_temperature(0));
             master.print(2,0,"IT:%.0lf", averageIntakeTemp);
         }
-    });    
-    
+    });  
+
+      
+
+
+/*
+    pros::Task colorSorting([]{
+        while(true){
+            if(abs(intakeStage2.get_actual_velocity())>0)
+            colorSort();
+        }
+    });
+*/
 
 
 }
@@ -73,19 +83,23 @@ void autonomous() {
         }else if(auton ==1){
             sixRing();
         }else if(auton == 2){
-            goalRush();
+            skillsAuton();
         }else if(auton == 3){
             skillsAuton();
         }
     }else{
-        skillsAuton(); //Chnage with test auton
+        sixRing(); //Chnage with test auton
     }
 }
 
 
 void opcontrol() {
 
+    target = states[0];
+
     while(true){
+
+
 
 
         controlDrivetrain();
@@ -102,7 +116,7 @@ void opcontrol() {
             }
 
             if(master.get_digital_new_press(DIGITAL_X)){
-                auton = 3;
+                auton = 5;
                 driver.init(auton);
             }
         }

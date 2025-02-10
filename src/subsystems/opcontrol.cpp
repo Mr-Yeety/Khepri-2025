@@ -9,8 +9,10 @@ void controlDrivetrain(){
 }
 
 void controlClamp(){
-    if(master.get_digital_new_press(driver.MOGO)){
-        mogo.toggle();
+    if(master.get_digital(driver.MOGO)){
+        mogo.set_value(true);
+    }else if(!master.get_digital(driver.MOGO)){
+        mogo.set_value(false);
     }
 }
 
@@ -25,11 +27,17 @@ void controlIntake(){
 }
 
 void colorSort(){
-    if(!isRed && (colorSensor.get_hue()>0 && colorSensor.get_hue()<5)){
-        pros::delay(500);
-        master.rumble("...");
-        intakeStage2.brake();
+    if(!isRed && (colorSensor.get_hue()>0 && colorSensor.get_hue()<15)){ //Red
+                pros::delay(220);
+				intake.brake();
+				pros::delay(190);
+				intake.move_voltage(-12000);
     }
+    if(isRed && (colorSensor.get_hue()>200 && colorSensor.get_hue()<230)){ //Blue
+                master.rumble("..");
+                pros::delay(25);
+				intake.brake();
+        }
 }
 
 
@@ -39,6 +47,12 @@ void nextState(){
     currState += 1;
     if(currState ==3){
         currState = 0;
+    }
+    if(currState ==2){
+        intakeStage2.move_voltage(12000);
+        pros::delay(10);
+        intakeStage2.move_voltage(0);
+
     }
     target = states[currState];
 

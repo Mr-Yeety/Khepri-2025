@@ -14,7 +14,7 @@ if(selector == 5){ //Sadeeb Controls X and B are in use
     //LB_JERK = pros::E_CONTROLLER_DIGITAL_RIGHT;
     INTAKE_LIFT = pros::E_CONTROLLER_DIGITAL_RIGHT;
 
-    LINEAR_CURVE = 0;
+    LINEAR_CURVE = 10;
     ANGLE_CURVE = 0;
 }else{ //AJ Controls
     MOGO = pros::E_CONTROLLER_DIGITAL_L1;

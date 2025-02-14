@@ -1,30 +1,22 @@
 #include "main.h"
 
-
-
 lv_obj_t * selectorScreen = lv_obj_create(NULL);
 lv_obj_t * confirmScreen = lv_obj_create(NULL);
 
-
 int page;
-
 static lv_style_t backgroundStyle;
-static lv_style_t background2Style;
-static lv_style_t background3Style;
 
 static lv_style_t buttonStyle;
 static lv_style_t switchStyle;
 static lv_style_t redSwitch;
 static lv_style_t blueSwitch;
 static lv_style_t knobSwitch;
-static lv_style_t goldSwitch;
-
 
 lv_obj_t * colorLED;
 lv_obj_t * colorSwitch;
- lv_obj_t * colorLabel1;
- lv_obj_t * driverSwitch;
- lv_obj_t * driverlabel;
+lv_obj_t * colorLabel1;
+lv_obj_t * driverSwitch;
+lv_obj_t * driverlabel;
 lv_obj_t * autonDropDown;
 lv_obj_t * pageDropDown;
 
@@ -32,10 +24,6 @@ void init(){
     initStyles();
     lv_obj_add_style(lv_scr_act(), &backgroundStyle,0);
     createSelectionScreen();
-
-
-
-
 }
 
 void initStyles(){
@@ -45,9 +33,6 @@ lv_style_set_bg_color(&backgroundStyle, lv_color_hex3(0x000));
 lv_style_set_text_color(&backgroundStyle, lv_color_hex3(0xfff));
 lv_style_set_border_width(&backgroundStyle, 0);
 
-
-
-
 lv_style_init(&buttonStyle);
 lv_style_set_radius(&buttonStyle, 10);
 lv_style_set_border_width(&buttonStyle, 1);
@@ -55,85 +40,17 @@ lv_style_set_border_color(&buttonStyle, lv_color_hex(0xBFA960));
 lv_style_set_text_color(&buttonStyle, lv_color_hex3(0xfff));
 lv_style_set_bg_color(&buttonStyle,lv_color_hex3(0x000));
 
-
-
-
 lv_style_init(&redSwitch);
 lv_style_set_bg_color(&redSwitch, lv_color_hex3(0xF00));
 lv_style_set_radius(&redSwitch,10);
-
 
 lv_style_init(&blueSwitch);
 lv_style_set_bg_color(&blueSwitch, lv_color_hex(0x0076C0));
 lv_style_set_radius(&blueSwitch,10);
 
-
-lv_style_init(&goldSwitch);
-lv_style_set_bg_color(&goldSwitch, lv_color_hex(0xBFA960));
-lv_style_set_radius(&goldSwitch,10);
-
 lv_style_init(&knobSwitch);
 lv_style_set_bg_color(&knobSwitch, lv_color_hex(0x000000));
 lv_style_set_border_width(&knobSwitch, 0);
-
-
-
-
-
-
-
-
-
-
-lv_style_init(&background2Style);
-lv_style_set_bg_color(&background2Style, lv_color_hex3(0xFF0));
-lv_style_set_text_color(&background2Style, lv_color_hex3(0xfff));
-
-
-lv_style_init(&background3Style);
-lv_style_set_bg_color(&background3Style, lv_color_hex3(0x00F));
-lv_style_set_text_color(&background3Style, lv_color_hex3(0xfff));
-
-}
-
-
-
-
-
-
-
-
-
-
-static void colorSwitchEventHandler(lv_event_t * event){
-if(lv_obj_has_state(colorSwitch,LV_STATE_CHECKED)){
-    lv_led_set_color(colorLED,lv_color_hex(0x000000));
-    lv_label_set_text(colorLabel1,"BLUE");
-    lv_obj_align_to(colorLabel1,colorLED,LV_ALIGN_CENTER,-2,0);
-    
-}else if(!lv_obj_has_state(colorSwitch,LV_STATE_CHECKED)){
-    lv_led_set_color(colorLED,lv_color_hex(0x000000));
-    lv_label_set_text(colorLabel1,"RED");
-    lv_obj_align_to(colorLabel1,colorLED,LV_ALIGN_CENTER,0,0);
-
-
-}
-
-
-}
-
-static void driverSwitchEventHandler(lv_event_t * event){
-
-    if(lv_obj_has_state(driverSwitch,LV_STATE_CHECKED)){
-        lv_label_set_text(driverlabel, "Your Driver is Sadeeb");
-        
-    }else{
-        lv_label_set_text(driverlabel, "Your Driver is AJ");
-
-    }
-
-
-
 }
 
 static void confirmSwitchEventHandler(lv_event_t * event){
@@ -141,7 +58,6 @@ static void confirmSwitchEventHandler(lv_event_t * event){
     std::cout<<"Ready";
     pros::delay(500);
     auton = lv_dropdown_get_selected(autonDropDown);
-
 
     if(lv_obj_has_state(colorSwitch,LV_STATE_CHECKED)){
         isRed = false;
@@ -152,9 +68,7 @@ static void confirmSwitchEventHandler(lv_event_t * event){
         lv_obj_clean(lv_scr_act());
         ready = true;
     }
-
 }
-
 
 void createSelectionScreen(){
 
@@ -167,7 +81,6 @@ void createSelectionScreen(){
     lv_obj_align(colorSection,LV_ALIGN_TOP_LEFT,0,0);
     lv_obj_set_size(colorSection,200,120);
 
-    
     colorLED = lv_led_create(colorSection);
     lv_obj_align_to(colorLED,colorSection,LV_ALIGN_CENTER,-20,-7);
     lv_led_set_color(colorLED,lv_color_hex(0x000000));
@@ -185,27 +98,10 @@ void createSelectionScreen(){
     lv_obj_add_style(colorSwitch,&blueSwitch, LV_PART_INDICATOR);
     lv_obj_add_style(colorSwitch,&knobSwitch, LV_PART_KNOB);
     lv_obj_set_size(colorSwitch,100,50);
-    lv_obj_add_event_cb(colorSwitch,colorSwitchEventHandler,LV_EVENT_VALUE_CHANGED,NULL);
     
-
     lv_obj_t * colorLabel = lv_label_create(colorSection);
     lv_label_set_text(colorLabel, "Choose A Color");
     lv_obj_align_to(colorLabel,colorSection,LV_ALIGN_CENTER,0,-40);
-
-
-
-
-
-
-
-
-
-
-    
-    
-
-
-
 
     lv_obj_t * autonSection = lv_obj_create(selectorScreen);
     lv_obj_add_style(autonSection,&backgroundStyle,0);
@@ -219,8 +115,6 @@ void createSelectionScreen(){
                             "6 Ring\n"
                             "Go Forward\n"
                             "Skills");
-
-
 
     lv_obj_align(autonDropDown, LV_ALIGN_CENTER, 0,0);
     lv_obj_set_style_bg_color(autonDropDown,lv_color_hex3(0x000), LV_PART_MAIN);
@@ -237,21 +131,9 @@ void createSelectionScreen(){
     lv_obj_set_style_border_width(list,2,  LV_PART_SELECTED | LV_STATE_CHECKED);
     lv_obj_set_style_radius(list,10,  LV_PART_SELECTED | LV_STATE_CHECKED);
 
-
-    
     lv_obj_t * autonLabel = lv_label_create(autonSection);
     lv_label_set_text(autonLabel, "Select An Auton");
     lv_obj_align_to(autonLabel,autonSection,LV_ALIGN_CENTER,0,-40);
-
-
-
-
-
-
-
-
-
-
 
     lv_obj_t * confirmButton = lv_btn_create(selectorScreen);
    lv_obj_add_style(confirmButton, &buttonStyle,0);

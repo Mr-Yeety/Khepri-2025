@@ -1,26 +1,31 @@
 #include "main.h"
 
-void sixRing(){
-
-   
+void fiveRing(){
 
 
         //_________________________________RED__________________________________________________
 
     if(isRed){
- 
-        intake.move_voltage(-12000);
-        pros::delay(200);
+        liftControlTask.resume();
+        intakeLockTask.suspend();
+        target= states[2];
+        chassis.turnToHeading(45.5,2000);
+        chassis.moveToPoint(6.0,6.2,3000,{.forwards=true});
+        while(chassis.isInMotion()){pros::delay(10);}
+        target= states[4];
+        pros::delay(300);
+
         chassis.moveToPoint(-5.7,-2.5,3000,{.forwards = false, .maxSpeed=127,.minSpeed=127});
         chassis.moveToPoint(-30.7,-7.9,3000,{.forwards = false,.maxSpeed=127,.minSpeed=127});
         target = states[0];
-
+        intake.move_voltage(12000);
+        pros::delay(300);
         intake.move_voltage(-12000);
 
-        chassis.moveToPoint(-43.4,-16.1,3000,{.maxSpeed=127,.minSpeed=127});
-        chassis.moveToPoint(-47.9,-30.9,3000,{.maxSpeed=127,.minSpeed=127});
-        chassis.moveToPoint(-43.1,-43.0,3000,{.maxSpeed=127,.minSpeed=127});
-        chassis.moveToPoint(-29.6,-32.8,3000,{.maxSpeed=127,.minSpeed=127});
+        chassis.moveToPose(-44.4,-17.7,204,3000);
+        chassis.moveToPoint(-46,-32.5,3000,{.forwards = true,.maxSpeed=127,.minSpeed=127});
+
+        chassis.moveToPoint(-28,-34,3000,{.forwards = true,.maxSpeed=127,.minSpeed=127});
 
 
       

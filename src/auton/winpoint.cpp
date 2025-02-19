@@ -3,20 +3,6 @@
 void winpoint(){
 
 
-    pros::Task mogoTask([] {
-        while (true)
-        {
-            if (mogoDistance.get_distance() <70)
-            {
-                mogo.set_value(true);
-            }
-            
-        }
-        
-    });
-
-    
-
 
     if(isRed){
 

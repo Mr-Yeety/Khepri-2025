@@ -112,7 +112,9 @@ void createSelectionScreen(){
     lv_dropdown_set_options(autonDropDown, "Solo AWP\n"
                             "Goal Rush\n"
                             "5 Ring\n"
+                            "5 Ring - Qual\n"
                             "6 Ring\n"
+                            "6 Ring - Qual\n"
                             "Go Forward\n"
                             "Skills");
 

@@ -2,82 +2,65 @@
 
 
 void goalRush(){
-    pros::Task mogoTask([] {
-        while (true)
-        {
-            if (mogoDistance.get_distance() <70)
-            {
-                mogo.set_value(true);
-            }
-            
-        }
-        
-    });
 
-    pros::Task intakeLockTask([] {
-        while (true)
-        {
-    if (intakeLock == true)
-            {
-            if(isRed && (colorSensor.get_hue()>0 && colorSensor.get_hue()<15)){ //Red
-                master.rumble("..");
-                    pros::delay(100);
-                    intakeStage1.move_voltage(0);
-                    intakeStage2.move_voltage(0);
-        }
-        if(!isRed && (colorSensor.get_hue()>200 && colorSensor.get_hue()<230)){ //Blue
-                    master.rumble("..");
-                    pros::delay(100);
-                    intakeStage1.move_voltage(0);
-                    intakeStage2.move_voltage(0);
-            }
-            }
-            
-        }
-        
-    });
+    chassis.setBrakeMode(MOTOR_BRAKE_HOLD);
+
+
+  
 
     if(isRed){
-        intakeLock = true;
+
+
+
+        intakeLockTask.resume();
+
+
         intakeStage1.move_voltage(-12000);
         intakeStage2.move_voltage(-12000);
-        chassis.moveToPoint(0,47.5, 2000, {.forwards = true, .maxSpeed = 127, .minSpeed = 0}); //Mogo 1
+
+        chassis.moveToPose(-2.0,52.6,-36,5000, {.lead=0.15});
+        liftControlTask.resume();
+        target = states[2];
         while(chassis.isInMotion()){pros::delay(10);}
-        doinker.set_value(true);
-        pros::delay(500);
-        chassis.moveToPoint(9.0,22, 4000, {.forwards = false, .maxSpeed = 127, .minSpeed = 0}); //Mogo 1 -Drop
-        while(chassis.isInMotion()){pros::delay(10);}
-        doinker.set_value(false);
-    
-
-    
-        chassis.moveToPoint(-19.3,37.8, 3000, {.forwards = false, .maxSpeed = 80, .minSpeed = 0}); //Mogo 2
-        while(chassis.isInMotion()){pros::delay(10);}
-        intakeLock = false;
-        intakeStage2.move_voltage(12000);
-        pros::delay(100);
-        intakeStage1.move_voltage(-12000);
-        intakeStage2.move_voltage(-12000);
-        pros::delay(800);
-        mogoTask.suspend();
-        mogo.set_value(false);
-
-        chassis.moveToPoint(2.6,15.2, 3000, {.forwards = true, .maxSpeed = 127, .minSpeed = 0}); //Mogo 1 - Grab
-        chassis.moveToPoint(7,40, 3000, {.forwards = false, .maxSpeed = 100, .minSpeed = 0}); //Mogo 1 - Grab
-        while(chassis.isInMotion()){pros::delay(10);}
-        mogoTask.resume();
-
-        chassis.moveToPose(-13,10,270, 3000, {.forwards = true, .maxSpeed = 127, .minSpeed = 0}); //Mogo 1 - Grab
-
-        chassis.moveToPoint(-45.5,19.5,3000, {.forwards = true, .maxSpeed = 127, .minSpeed =0}); //Intake Lift
+        target = states[4];
+        pros::delay(400);
+        chassis.turnToHeading(270,2000, {.direction=AngularDirection::CW_CLOCKWISE, .maxSpeed=90});
+        chassis.moveToPoint(-18,52,3000);
 
 
 
 
 
-        pros::delay(6000);
-        mogoTask.suspend();
+
         
+        /*
+        intakeLock=true;
+        target = states[1];
+        pros::delay(450);
+        intakeStage2.move_voltage(-9000);
+        pros::delay(300);
+        intakeStage2.move_voltage(5000);
+        pros::delay(100);
+        intakeStage2.move_voltage(0);
+        pros::delay(200);
+        target = states[2];
+        pros::delay(200);
+        chassis.moveToPoint(0,48.9,2000, {.maxSpeed=127});
+        intakeStage1.move_voltage(-12000);
+        intakeStage2.move_voltage(-12000);
+        while(chassis.isInMotion()){pros::delay(1);}
+        target = states[4];
+        pros::delay(150);
+        chassis.turnToHeading(180,2000, {.direction=AngularDirection::CW_CLOCKWISE, .maxSpeed=90});
+*/
+
+        intakeLockTask.suspend();
+        pros::delay(6000);
+
+
+
+
+
 
 
 

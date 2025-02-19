@@ -4,7 +4,7 @@
 
 void Driver::init(int selector){
 
-if(selector == 5){ //Sadeeb Controls X and B are in use
+if(selector == 7){ //Sadeeb Controls X and B are in use
     MOGO = pros::E_CONTROLLER_DIGITAL_L1;
     //FLEX = pros::E_CONTROLLER_DIGITAL_R1;
     INTAKE = pros::E_CONTROLLER_DIGITAL_R2;

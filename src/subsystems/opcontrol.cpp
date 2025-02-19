@@ -20,7 +20,12 @@ void controlIntake(){
     if(master.get_digital(driver.INTAKE)){
         intake.move_voltage(12000); 
     }else if(master.get_digital(driver.INTAKE_REV)){
+        if(currState == 1){
+            intakeStage1.move_voltage(-12000);
+            intakeStage2.move_voltage(-10000);
+        }else{
         intake.move_voltage(-12000);
+        }
     }else{
         intake.move_voltage(0);
     }
@@ -49,9 +54,10 @@ void nextState(){
         currState = 0;
     }
     if(currState ==2){
-        intakeStage2.move_voltage(12000);
-        pros::delay(10);
+        intakeStage2.move_voltage(5000);
+        pros::delay(100);
         intakeStage2.move_voltage(0);
+        pros::delay(200);
 
     }
     target = states[currState];
@@ -59,7 +65,7 @@ void nextState(){
 }
 
 void updateWallStakes(){
-    double kp = 0.03;
+    double kp = 0.033;
     double error = target - ladyBrownSensor.get_position();
     double velocity = kp * error;
     ladyBrown.move(velocity);
@@ -68,6 +74,24 @@ void updateWallStakes(){
 void controlWallStakes(){
     if(master.get_digital_new_press(driver.LADYBROWN)){
         nextState();
+    }
+    else if(master.get_digital_new_press(DIGITAL_DOWN)){
+        if(target == states[3]){
+            target = states[0];
+        }else{
+        target = states[3];
+        }
+    }
+    else if(master.get_digital_new_press(DIGITAL_LEFT)){
+        if(target == states[4]){
+            target = states[0];
+        }else{
+        intakeStage2.move_voltage(5000);
+        pros::delay(100);
+        intakeStage2.move_voltage(0);
+        pros::delay(200);
+        target = states[4];
+        }
     }
 
 }

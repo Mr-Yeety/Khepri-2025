@@ -19,6 +19,7 @@
  void testLinearPID();
  void driveForwards();
  void sixRing();
+ void fiveRing();
  void goalRush();
  void winpoint();
  void skillsAuton();

@@ -5,7 +5,8 @@
 
 
 void controlDrivetrain(){
-    scarabDrive::joyDrive(driver.LINEAR_CURVE, driver.ANGLE_CURVE);
+    chassis.arcade(master.get_analog(ANALOG_LEFT_Y),master.get_analog(ANALOG_RIGHT_X));
+
 }
 
 void controlClamp(){
@@ -18,14 +19,15 @@ void controlClamp(){
 
 void controlIntake(){
     if(master.get_digital(driver.INTAKE)){
-        intake.move_voltage(12000); 
+        intakeStage1.move_voltage(12000); 
+        intakeStage2.move_voltage(12000); 
     }else if(master.get_digital(driver.INTAKE_REV)){
         if(currState == 1){
             intakeStage1.move_voltage(-12000);
             intakeStage2.move_voltage(-10000);
         }else{
-        intake.move_voltage(-12000);
-        }
+            intakeStage1.move_voltage(-12000); 
+            intakeStage2.move_voltage(-12000);         }
     }else{
         intake.move_voltage(0);
     }
@@ -53,13 +55,6 @@ void nextState(){
     if(currState ==3){
         currState = 0;
     }
-    if(currState ==2){
-        intakeStage2.move_voltage(5000);
-        pros::delay(100);
-        intakeStage2.move_voltage(0);
-        pros::delay(200);
-
-    }
     target = states[currState];
 
 }
@@ -82,15 +77,20 @@ void controlWallStakes(){
         target = states[3];
         }
     }
-    else if(master.get_digital_new_press(DIGITAL_LEFT)){
+    else if(master.get_digital_new_press(DIGITAL_RIGHT)){
         if(target == states[4]){
             target = states[0];
         }else{
-        intakeStage2.move_voltage(5000);
-        pros::delay(100);
-        intakeStage2.move_voltage(0);
-        pros::delay(200);
+ 
         target = states[4];
+        }
+    }
+    else if(master.get_digital_new_press(DIGITAL_UP)){
+        if(target == states[5]){
+            target = states[0];
+        }else{
+ 
+        target = states[5];
         }
     }
 
@@ -106,4 +106,17 @@ void controlIntakeLift(){
     if(master.get_digital_new_press(driver.INTAKE_LIFT)){
         intakeLift.toggle();
     }
+}
+
+void resetLB(){
+    liftControlTask.suspend();
+    ladyBrown.set_brake_mode(MOTOR_BRAKE_COAST);
+    ladyBrown.move(-127);
+    pros::delay(900);
+    ladyBrown.move(0);
+    pros::delay(400);
+    ladyBrown.set_brake_mode(MOTOR_BRAKE_HOLD);
+    pros::delay(100);
+    ladyBrownSensor.reset_position();
+    liftControlTask.resume();
 }

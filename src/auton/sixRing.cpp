@@ -40,7 +40,7 @@ void sixRing(){
     
     //2 Rings on the white lines
     chassis.moveToPoint(19.72, 48.83, 2000, {.forwards = true, .maxSpeed = 127, .minSpeed = 0}); // Ring 2
-    mogoTask.suspend(); //mogo task suspend
+    //mogoTask.suspend(); //mogo task suspend
     chassis.moveToPoint(28.17, 49.77, 2000, {.forwards = true, .maxSpeed = 127, .minSpeed = 0}); // Ring 3
 
     //Ring Stack -  We want the bottom one

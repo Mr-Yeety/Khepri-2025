@@ -20,7 +20,7 @@ lv_obj_t * driverlabel;
 lv_obj_t * autonDropDown;
 lv_obj_t * pageDropDown;
 
-void init(){
+void inital(){
     initStyles();
     lv_obj_add_style(lv_scr_act(), &backgroundStyle,0);
     createSelectionScreen();

@@ -12,10 +12,10 @@ inline bool isRed = true;
 
 inline bool intakeLock = false;
 
-inline const int numStates = 5;
-inline int states[numStates] = {0,3000,13500,25000,22350};
+inline const int numStates = 6;
+inline int states[numStates] = {0,2500,13500,25000,22350,15000};
 inline int currState = 0;
-inline int target = 0;
+inline int target;
 
 
     
@@ -31,7 +31,7 @@ inline pros::MotorGroup leftDrive({-18,19,-20});
 inline pros::MotorGroup rightDrive({11,12,-13});
 
 inline pros::Rotation verticalOdomWheel(17);
-inline pros::Rotation horizontalOdomWheel(-14);
+//inline pros::Rotation horizontalOdomWheel(-14);
 inline pros::Rotation ladyBrownSensor(6);
 inline pros::Distance mogoDistance(16);
 
@@ -51,16 +51,17 @@ inline pros::adi::Pneumatics mogo('a',false);
 inline pros::adi::Pneumatics intakeLift('b',false);
 inline pros::adi::Pneumatics doinker('c',false);
 
-
 //Lemlib
 inline lemlib::Drivetrain drivetrain(&leftDrive,&rightDrive,12,lemlib::Omniwheel::NEW_325, 450,2); 
 inline lemlib::TrackingWheel verticalTrackingWheel(&verticalOdomWheel,lemlib::Omniwheel::NEW_275,-1); //CHANGE OFFSET
-inline lemlib::TrackingWheel horizontalTrackingWheel(&horizontalOdomWheel, lemlib::Omniwheel::NEW_275, 1); //CHANGE OFFSET
+//inline lemlib::TrackingWheel horizontalTrackingWheel(&horizontalOdomWheel, lemlib::Omniwheel::NEW_275, 1); //CHANGE OFFSET
 
-inline lemlib::OdomSensors sensors(&verticalTrackingWheel, nullptr,&horizontalTrackingWheel,nullptr, &imu1);
+inline lemlib::OdomSensors sensors(&verticalTrackingWheel, nullptr,nullptr,nullptr, &imu1);
 
 // lateral PID controller
-inline lemlib::ControllerSettings lateral_controller(6.8, // proportional gain (kP)
+
+/*
+inline lemlib::ControllerSettings lateral_controller(8.2, // proportional gain (kP)
                                               0, // integral gain (kI)
                                               30, // derivative gain (kD)
                                               3, // anti windup
@@ -70,33 +71,40 @@ inline lemlib::ControllerSettings lateral_controller(6.8, // proportional gain (
                                               500, // large error range timeout, in milliseconds
                                             20 // maximum acceleration (slew)
 );
+*/
+
+inline lemlib::ControllerSettings lateral_controller(10, // proportional gain (kP)
+                                              0, // integral gain (kI)
+                                              0, // derivative gain (kD)
+                                              0, // anti windup
+                                              0, // small error range, in inches
+                                              0, // small error range timeout, in milliseconds
+                                              0, // large error range, in inches
+                                              0, // large error range timeout, in milliseconds
+                                            0 // maximum acceleration (slew)
+);
+
 
 // angular PID controller
-inline lemlib::ControllerSettings angular_controller(6.9, // proportional gain (kP)
-                                              0.025, // integral gain (kI)
-                                              70, // derivative gain (kD)
-                                              3, // anti windup
-                                              1, // small error range, in degrees
-                                              100, // small error range timeout, in milliseconds
-                                              3, // large error range, in degrees
-                                              500, // large error range timeout, in milliseconds
+inline lemlib::ControllerSettings angular_controller(0, // proportional gain (kP)
+                                              0, // integral gain (kI)
+                                              0, // derivative gain (kD)
+                                              0, // anti windup
+                                              0, // small error range, in inches
+                                              0, // small error range timeout, in milliseconds
+                                              0, // large error range, in inches
+                                              0, // large error range timeout, in milliseconds
                                               0 // maximum acceleration (slew)
 );
 
 inline lemlib::Chassis chassis(drivetrain,lateral_controller,angular_controller,sensors);
 
 
-inline pros::Task liftControlTask([] {
-  while(true) {
-      updateWallStakes();
-      pros::delay(10);
-  }
-});
 
 inline pros::Task mogoTask([] {
   while (true)
   {
-      if (mogoDistance.get_distance() <70)
+      if (mogoDistance.get_distance() <46)
       {
           mogo.set_value(true);
       }
@@ -127,18 +135,15 @@ inline pros::Task intakeLockTask([] {
 });
 
 
-inline pros::Task telemetryShowTask([] {
-  while(true) {
-      //pros::delay(10);
-      
-      double averageLeftTemp = (leftDrive.get_temperature(0) + leftDrive.get_temperature(1) + leftDrive.get_temperature(2)) / 3;
-      double averageRightTemp = (rightDrive.get_temperature(0) + rightDrive.get_temperature(1) + rightDrive.get_temperature(2)) / 3;
-      double averageDriveTemp = (averageRightTemp + averageRightTemp) / 2;
-      double firstIntakeTemp = intake.get_temperature(0);
-      double secondIntakeTemp = intake.get_temperature(1);
-
-      master.print(0, 0, "%.1lf|%.1lf|%.1lf", chassis.getPose().x, chassis.getPose().y, chassis.getPose().theta);
-      master.print(1, 0, "DT:%.0lf|LBT:%.0lf", averageDriveTemp, ladyBrown.get_temperature(0));
-      master.print(2, 0, "FST:%.0lf|SST:%.0lf", firstIntakeTemp, secondIntakeTemp);
+   
+inline pros::Task liftControlTask([] {
+  while(true){
+      updateWallStakes();
+      pros::delay(10);
   }
-});  
+});
+
+
+
+
+

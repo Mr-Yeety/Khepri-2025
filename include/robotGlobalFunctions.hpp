@@ -12,6 +12,7 @@
  void colorSort();
  void nextState();
 
+ void resetLB();
 
 //Auton
 

@@ -10,7 +10,7 @@
 inline bool ready= false;
 
 
-void init();
+void inital();
 void initStyles();
 void createSelectionScreen();
 

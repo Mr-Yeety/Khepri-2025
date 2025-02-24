@@ -7,7 +7,7 @@
 
 //Auton Selector
 inline int auton = 0;
-inline bool isRed = true;
+inline bool isRed = false;
 
 
 inline bool intakeLock = false;
@@ -60,8 +60,8 @@ inline lemlib::OdomSensors sensors(&verticalTrackingWheel, nullptr,nullptr,nullp
 
 // lateral PID controller
 
-/*
-inline lemlib::ControllerSettings lateral_controller(8.2, // proportional gain (kP)
+
+inline lemlib::ControllerSettings lateral_controller(8, // proportional gain (kP)
                                               0, // integral gain (kI)
                                               30, // derivative gain (kD)
                                               3, // anti windup
@@ -71,29 +71,18 @@ inline lemlib::ControllerSettings lateral_controller(8.2, // proportional gain (
                                               500, // large error range timeout, in milliseconds
                                             20 // maximum acceleration (slew)
 );
-*/
 
-inline lemlib::ControllerSettings lateral_controller(10, // proportional gain (kP)
-                                              0, // integral gain (kI)
-                                              0, // derivative gain (kD)
-                                              0, // anti windup
-                                              0, // small error range, in inches
-                                              0, // small error range timeout, in milliseconds
-                                              0, // large error range, in inches
-                                              0, // large error range timeout, in milliseconds
-                                            0 // maximum acceleration (slew)
-);
 
 
 // angular PID controller
-inline lemlib::ControllerSettings angular_controller(0, // proportional gain (kP)
+inline lemlib::ControllerSettings angular_controller(6.9, // proportional gain (kP)
                                               0, // integral gain (kI)
-                                              0, // derivative gain (kD)
+                                              30, // derivative gain (kD)
                                               0, // anti windup
-                                              0, // small error range, in inches
-                                              0, // small error range timeout, in milliseconds
-                                              0, // large error range, in inches
-                                              0, // large error range timeout, in milliseconds
+                                              1, // small error range, in inches
+                                              100, // small error range timeout, in milliseconds
+                                              3, // large error range, in inches
+                                              500, // large error range timeout, in milliseconds
                                               0 // maximum acceleration (slew)
 );
 

@@ -11,14 +11,6 @@ void initialize() {
     master.clear();
     pros::delay(50);
 
-if(pros::competition::is_connected()){
-    inital();
-    while(ready==false){
-        printf(" ");
-    }
-    
-}
-
     driver.init(auton);
     chassis.calibrate();
     leftDrive.set_brake_mode(MOTOR_BRAKE_HOLD);
@@ -67,23 +59,16 @@ void competition_initialize() {}
 
 
 void autonomous() {
-    if(pros::competition::is_connected()){
-        if(auton==0){
-            winpoint();
-        }else if(auton ==1){
-            sixRing();
-        }else if(auton == 2){
-            goalRush();
-        }else if(auton == 3){
-            skillsAuton();
-        }
-    }else{
-        testLinearPID(); //Chnage with test auton
-    }
+  chassis.setPose(0,0,0);
+
+  fiveRing();
+
 }
 
 
 void opcontrol() {
+    chassis.setBrakeMode(MOTOR_BRAKE_HOLD);
+    mogoTask.suspend();
 
     while(true){
 
